@@ -1,0 +1,756 @@
+{% comment %}
+  Shoppable Product Gallery
+  File: sections/shoppable-product-gallery.liquid
+{% endcomment %}
+
+{%- style -%}
+/* ── SECTION ── */
+.spg-{{ section.id }} {
+  padding: 48px 0 60px;
+}
+.spg-{{ section.id }} .spg-heading {
+  font-size: 28px;
+  font-weight: 400;
+  color: #21301c;
+  margin: 0 0 28px;
+  line-height: 1.25;
+}
+
+/* ── GALLERY GRID ── */
+.spg-{{ section.id }} .spg-grid {
+  display: grid;
+  grid-template-columns: repeat({{ section.settings.cols_desktop }}, 1fr);
+  gap: {{ section.settings.grid_gap }}px;
+}
+.spg-{{ section.id }} .spg-item {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #e8e4e0 center / cover no-repeat;
+}
+.spg-{{ section.id }} .spg-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── PIN BUTTON ── */
+.spg-{{ section.id }} .spg-pin {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  line-height: 1;
+  color: #21301c;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  transition: background .2s, transform .2s;
+  z-index: 2;
+}
+.spg-{{ section.id }} .spg-pin:hover {
+  background: #fff;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* ── OVERLAY ── */
+.spg-overlay-{{ section.id }} {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 900;
+  cursor: pointer;
+}
+.spg-overlay-{{ section.id }}.is-open { display: block; }
+
+/* ── POPUP ── */
+.spg-popup-{{ section.id }} {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 901;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: 0 16px 48px rgba(0,0,0,.22);
+  padding: 32px;
+}
+.spg-popup-{{ section.id }}.is-open { display: block; }
+
+/* close */
+.spg-popup-{{ section.id }} .spg-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #21301c;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spg-popup-{{ section.id }} .spg-close svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+}
+
+/* ── MEDIA ROW ── */
+.spg-popup-{{ section.id }} .spg-media {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding-right: 24px;
+}
+.spg-popup-{{ section.id }} .spg-media img {
+  flex: 0 0 88px;
+  width: 88px;
+  height: 104px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+.spg-popup-{{ section.id }} .spg-media-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.spg-popup-{{ section.id }} .spg-prod-title {
+  font-size: 21px;
+  font-weight: 400;
+  color: #21301c;
+  margin: 0;
+  line-height: 1.3;
+}
+.spg-popup-{{ section.id }} .spg-prod-price {
+  font-size: 18px;
+  font-weight: 400;
+  color: #21301c;
+  margin: 0;
+}
+.spg-popup-{{ section.id }} .spg-prod-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #6a6a62;
+  margin: 0;
+}
+
+/* option group */
+.spg-popup-{{ section.id }} .spg-opt {
+  margin-bottom: 18px;
+}
+.spg-popup-{{ section.id }} .spg-opt-label {
+  font-size: 14px;
+  color: #21301c;
+  margin: 0 0 10px;
+  font-weight: 400;
+}
+
+/* ── COLOR SWATCHES ── */
+.spg-popup-{{ section.id }} .spg-swatches {
+  display: flex;
+  border: 1px solid #21301c;
+  overflow: hidden;
+  position: relative;
+}
+.spg-popup-{{ section.id }} .spg-swatch {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: none;
+  border-left: 4px solid #cccccc;
+  padding: 14px 16px;
+  font-size: 16px;
+  color: #21301c;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+  font-family: inherit;
+}
+.spg-popup-{{ section.id }} .spg-swatch:first-child {
+  border-left: 4px solid #cccccc;
+}
+.spg-popup-{{ section.id }} .spg-swatch.is-active {
+  background: #000000;
+  color: #fff;
+}
+
+/* ── SIZE DROPDOWN ── */
+.spg-popup-{{ section.id }} .spg-dropdown {
+  position: relative;
+}
+.spg-popup-{{ section.id }} .spg-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #21301c;
+  padding: 14px 16px;
+  font-size: 16px;
+  color: #21301c;
+  cursor: pointer;
+  font-family: inherit;
+}
+.spg-popup-{{ section.id }} .spg-dropdown-toggle svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  flex-shrink: 0;
+  transition: transform .2s;
+}
+.spg-popup-{{ section.id }} .spg-dropdown.is-open .spg-dropdown-toggle svg {
+  transform: rotate(180deg);
+}
+.spg-popup-{{ section.id }} .spg-dropdown-list {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #21301c;
+  border-top: none;
+  background: #fff;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+.spg-popup-{{ section.id }} .spg-dropdown.is-open .spg-dropdown-list {
+  display: flex;
+}
+.spg-popup-{{ section.id }} .spg-dropdown-option {
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(33,48,28,.1);
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #21301c;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+}
+.spg-popup-{{ section.id }} .spg-dropdown-option:first-child { border-top: none; }
+.spg-popup-{{ section.id }} .spg-dropdown-option:hover { background: #f5f5f0; }
+
+/* ── ATC BUTTON ── */
+.spg-popup-{{ section.id }} .spg-atc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #000000;
+  color: #fff;
+  border: none;
+  padding: 20px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: opacity .2s;
+}
+.spg-popup-{{ section.id }} .spg-atc:hover { opacity: .88; }
+.spg-popup-{{ section.id }} .spg-atc[disabled] { opacity: .45; cursor: not-allowed; }
+.spg-popup-{{ section.id }} .spg-atc svg {
+  width: 32px;
+  height: 14px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 1.6;
+  flex-shrink: 0;
+}
+
+/* ── SCROLL LOCK ── */
+body.spg-scroll-lock { overflow: hidden; }
+
+.cart__empty-text, .is-empty .cart__contents, cart-items.is-empty .title-wrapper-with-link, .is-empty .cart__footer {
+     display: block !important; 
+}
+
+
+
+/* ── RESPONSIVE ── */
+@media screen and (max-width: 989px) {
+  .spg-{{ section.id }} .spg-grid {
+    grid-template-columns: repeat({{ section.settings.cols_tablet }}, 1fr);
+  }
+}
+@media screen and (max-width: 768px) {
+  .spg-{{ section.id }} { padding: 32px 0 48px; }
+  .spg-{{ section.id }} .spg-heading { font-size: 22px; text-align: center;}
+  .spg-{{ section.id }} .spg-grid {
+    grid-template-columns: repeat({{ section.settings.cols_mobile }}, 1fr);
+    gap: 8px;
+  }
+  .spg-popup-{{ section.id }} {
+    width: calc(100vw - 24px);
+    padding: 24px 20px;
+  }
+}
+{%- endstyle -%}
+
+<div class="spg-{{ section.id }}" id="Spg-{{ section.id }}">
+  <div class="page-width">
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="spg-heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="spg-grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'gallery_item' -%}
+          {%- assign gproduct = block.settings.product -%}
+          {%- assign gimage   = block.settings.gallery_image -%}
+
+          {%- if gproduct != blank -%}
+            {%- capture pjson -%}
+            {
+              "title":{{ gproduct.title | json }},
+              "price":{{ gproduct.selected_or_first_available_variant.price | money | json }},
+              "image":{{ gproduct.featured_image | image_url: width: 300 | json }},
+              "description":{{ gproduct.description | strip_html | truncatewords: 20 | json }},
+              "options":[{%- for o in gproduct.options -%}{{ o | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+              "variants":[
+                {%- for v in gproduct.variants -%}
+                {"id":{{ v.id }},"o1":{{ v.option1 | json }},"o2":{{ v.option2 | json }},"o3":{{ v.option3 | json }},"price":{{ v.price | money | json }},"available":{{ v.available }}}
+                {%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
+              ]
+            }
+            {%- endcapture -%}
+          {%- endif -%}
+
+          <div class="spg-item" {{ block.shopify_attributes }}>
+            {%- if gimage != blank -%}
+              <img src="{{ gimage | image_url: width: 800 }}" alt="{{ gproduct.title | default: '' | escape }}" loading="lazy" width="800">
+            {%- elsif gproduct != blank and gproduct.featured_image != blank -%}
+              <img src="{{ gproduct.featured_image | image_url: width: 800 }}" alt="{{ gproduct.title | escape }}" loading="lazy" width="800">
+            {%- endif -%}
+
+            {%- if gproduct != blank -%}
+              <button
+                type="button"
+                class="spg-pin"
+                style="top:{{ block.settings.pin_top }}%;left:{{ block.settings.pin_left }}%;"
+                data-product='{{ pjson | strip_newlines }}'
+                aria-label="Quick view {{ gproduct.title | escape }}"
+              >+</button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+<div class="spg-overlay-{{ section.id }}" id="SpgOverlay-{{ section.id }}"></div>
+
+<div class="spg-popup-{{ section.id }}" id="SpgPopup-{{ section.id }}" role="dialog" aria-modal="true" aria-hidden="true">
+  <button type="button" class="spg-close" id="SpgClose-{{ section.id }}" aria-label="Close">
+    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+
+  <div class="spg-media">
+    <img id="SpgImg-{{ section.id }}" src="" alt="" width="88" height="104">
+    <div class="spg-media-info">
+      <p class="spg-prod-title" id="SpgTitle-{{ section.id }}"></p>
+      <p class="spg-prod-price" id="SpgPrice-{{ section.id }}"></p>
+      <p class="spg-prod-desc"  id="SpgDesc-{{ section.id }}"></p>
+    </div>
+  </div>
+
+  <div class="spg-opt" id="SpgColorGroup-{{ section.id }}" hidden>
+    <p class="spg-opt-label">Color</p>
+    <div class="spg-swatches" id="SpgSwatches-{{ section.id }}"></div>
+  </div>
+
+  <div class="spg-opt" id="SpgSizeGroup-{{ section.id }}" hidden>
+    <p class="spg-opt-label">Size</p>
+    <div class="spg-dropdown" id="SpgDropdown-{{ section.id }}">
+      <button type="button" class="spg-dropdown-toggle" id="SpgDropdownToggle-{{ section.id }}">
+        <span id="SpgDropdownLabel-{{ section.id }}">Choose your size</span>
+        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <ul class="spg-dropdown-list" id="SpgDropdownList-{{ section.id }}"></ul>
+    </div>
+  </div>
+
+  <button type="button" class="spg-atc" id="SpgAtc-{{ section.id }}">
+    <span id="SpgAtcLabel-{{ section.id }}">ADD TO CART</span>
+    <svg viewBox="0 0 28 12"><path d="M0 6h24M19 1l5 5-5 5"/></svg>
+  </button>
+</div>
+
+<script>
+(function(){
+  var S        = '{{ section.id }}';
+  var root     = document.getElementById('Spg-'               + S);
+  var overlay  = document.getElementById('SpgOverlay-'        + S);
+  var popup    = document.getElementById('SpgPopup-'          + S);
+  var closeBtn = document.getElementById('SpgClose-'          + S);
+  var img      = document.getElementById('SpgImg-'            + S);
+  var titleEl  = document.getElementById('SpgTitle-'          + S);
+  var priceEl  = document.getElementById('SpgPrice-'          + S);
+  var descEl   = document.getElementById('SpgDesc-'           + S);
+  var colorGrp = document.getElementById('SpgColorGroup-'     + S);
+  var swatches = document.getElementById('SpgSwatches-'       + S);
+  var sizeGrp  = document.getElementById('SpgSizeGroup-'      + S);
+  var dropdown = document.getElementById('SpgDropdown-'       + S);
+  var ddToggle = document.getElementById('SpgDropdownToggle-' + S);
+  var ddLabel  = document.getElementById('SpgDropdownLabel-'  + S);
+  var ddList   = document.getElementById('SpgDropdownList-'   + S);
+  var atcBtn   = document.getElementById('SpgAtc-'            + S);
+  var atcLabel = document.getElementById('SpgAtcLabel-'       + S);
+
+  if (!root) return;
+
+  var prod = null, colorIdx = -1, sizeIdx = -1;
+  var selColor = null, selSize = null, curVariant = null;
+  var pendingAddController = null;
+  var latestRequestToken = 0;
+
+  var COLOR_MAP = {
+    'black':'#1a1a1a','white':'#f5f5f5','red':'#c0392b',
+    'blue':'#2563eb','navy':'#1e3a5f','green':'#2d6a2d',
+    'grey':'#9ca3af','gray':'#9ca3af','brown':'#7c5c3e',
+    'beige':'#d4bfa0','pink':'#f472b6','yellow':'#facc15',
+    'orange':'#f97316','purple':'#7c3aed','cream':'#f5f0e8',
+    'camel':'#c19a6b','khaki':'#c3b091','olive':'#6b7c3d',
+    'teal':'#0d9488','coral':'#f08080','mint':'#98d8c8',
+    'lavender':'#e6d5f5','burgundy':'#800020','charcoal':'#36454f',
+    'ivory':'#fffff0','sand':'#c2b280'
+  };
+
+  function getColorHex(name) {
+    if (!name) return '#cccccc';
+    var key = name.toLowerCase().trim();
+    if (COLOR_MAP[key]) return COLOR_MAP[key];
+    for (var k in COLOR_MAP) {
+      if (key.indexOf(k) !== -1) return COLOR_MAP[k];
+    }
+    return '#cccccc';
+  }
+
+  function optIdx(keyword) {
+    if (!prod) return -1;
+    for (var i = 0; i < prod.options.length; i++) {
+      if (prod.options[i].toLowerCase().indexOf(keyword) !== -1) return i;
+    }
+    return -1;
+  }
+  function optVal(v, idx) { return [v.o1, v.o2, v.o3][idx]; }
+
+  function findVariant() {
+    for (var i = 0; i < prod.variants.length; i++) {
+      var v = prod.variants[i];
+      var okC = colorIdx === -1 || optVal(v, colorIdx) === selColor;
+      var okS = sizeIdx  === -1 || selSize === null || optVal(v, sizeIdx) === selSize;
+      if (okC && okS) return v;
+    }
+    return null;
+  }
+
+  function updateVariant() {
+    curVariant = findVariant();
+    if (curVariant) {
+      priceEl.textContent  = curVariant.price;
+      atcBtn.disabled      = !curVariant.available;
+      atcLabel.textContent = curVariant.available ? 'ADD TO CART' : 'SOLD OUT';
+    } else {
+      atcBtn.disabled      = true;
+      atcLabel.textContent = 'ADD TO CART';
+    }
+  }
+
+  function renderColors() {
+    swatches.innerHTML = '';
+    colorIdx = optIdx('colo');
+    if (colorIdx === -1) { colorGrp.hidden = true; return; }
+    colorGrp.hidden = false;
+
+    var seen = [];
+    prod.variants.forEach(function(v) {
+      var val = optVal(v, colorIdx);
+      if (val && seen.indexOf(val) === -1) seen.push(val);
+    });
+    selColor = seen[0] || null;
+
+    seen.forEach(function(val, i) {
+      var btn = document.createElement('button');
+      btn.type      = 'button';
+      btn.className = 'spg-swatch' + (i === 0 ? ' is-active' : '');
+      btn.style.borderLeftColor = getColorHex(val);
+      btn.textContent = val;
+
+      btn.addEventListener('click', function() {
+        selColor = val;
+        swatches.querySelectorAll('.spg-swatch').forEach(function(b) {
+          b.classList.remove('is-active');
+        });
+        btn.classList.add('is-active');
+        updateVariant();
+      });
+      swatches.appendChild(btn);
+    });
+  }
+
+  function renderSizes() {
+    ddList.innerHTML = '';
+    sizeIdx = optIdx('size');
+    if (sizeIdx === -1) { sizeGrp.hidden = true; return; }
+    sizeGrp.hidden      = false;
+    selSize             = null;
+    ddLabel.textContent = 'Choose your size';
+
+    var seen = [];
+    prod.variants.forEach(function(v) {
+      var val = optVal(v, sizeIdx);
+      if (val && seen.indexOf(val) === -1) seen.push(val);
+    });
+
+    seen.forEach(function(val) {
+      var li  = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type        = 'button';
+      btn.className   = 'spg-dropdown-option';
+      btn.textContent = val;
+      btn.addEventListener('click', function() {
+        selSize             = val;
+        ddLabel.textContent = val;
+        dropdown.classList.remove('is-open');
+        updateVariant();
+      });
+      li.appendChild(btn);
+      ddList.appendChild(li);
+    });
+  }
+
+  ddToggle.addEventListener('click', function() {
+    dropdown.classList.toggle('is-open');
+  });
+
+  function lockScroll()   { document.body.classList.add('spg-scroll-lock'); }
+  function unlockScroll() { document.body.classList.remove('spg-scroll-lock'); }
+
+  function open(data) {
+    prod                = data;
+    img.src             = prod.image || '';
+    img.alt             = prod.title || '';
+    titleEl.textContent = prod.title || '';
+    priceEl.textContent = prod.price || '';
+    descEl.textContent  = prod.description || '';
+
+    renderColors();
+    renderSizes();
+    updateVariant();
+
+    lockScroll();
+    overlay.classList.add('is-open');
+    popup.classList.add('is-open');
+    popup.setAttribute('aria-hidden', 'false');
+    closeBtn.focus();
+  }
+
+  function close() {
+    unlockScroll();
+    overlay.classList.remove('is-open');
+    popup.classList.remove('is-open');
+    popup.setAttribute('aria-hidden', 'true');
+    dropdown.classList.remove('is-open');
+  }
+
+  root.querySelectorAll('.spg-pin').forEach(function(pin) {
+    pin.addEventListener('click', function() {
+      try { open(JSON.parse(pin.getAttribute('data-product'))); }
+      catch(e) { console.error('SPG: bad product JSON', e); }
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && popup.classList.contains('is-open')) close();
+  });
+
+  function openCartDrawer(cartResponseData) {
+    var cartDrawer = document.querySelector('cart-drawer');
+    if (!cartDrawer) {
+      console.error('SPG: <cart-drawer> element not found on this page.');
+      return;
+    }
+
+    if (typeof cartDrawer.renderContents === 'function') {
+      try {
+        cartDrawer.renderContents(cartResponseData);
+        return;
+      } catch (renderError) {
+        console.error('SPG: cartDrawer.renderContents() threw an error, falling back to manual render.', renderError);
+      }
+    }
+
+    /* Fallback: matches this theme's actual cart-drawer.liquid markup —
+       cart items live inside `.drawer__inner`, and the cart icon bubble
+       is a standalone `.shopify-section`. */
+    var innerWrap = cartDrawer.querySelector('.drawer__inner');
+    var cartDrawerHtml = cartResponseData.sections && cartResponseData.sections['cart-drawer'];
+    if (innerWrap && cartDrawerHtml) {
+      var parsedDrawer = new DOMParser().parseFromString(cartDrawerHtml, 'text/html');
+      var sourceInner = parsedDrawer.querySelector('.drawer__inner');
+      if (sourceInner) {
+        innerWrap.innerHTML = sourceInner.innerHTML;
+      }
+    }
+
+    var bubbleHtml = cartResponseData.sections && cartResponseData.sections['cart-icon-bubble'];
+    var bubbleTarget = document.getElementById('cart-icon-bubble');
+    if (bubbleTarget && bubbleHtml) {
+      var parsedBubble = new DOMParser().parseFromString(bubbleHtml, 'text/html');
+      var sourceBubble = parsedBubble.querySelector('.shopify-section');
+      if (sourceBubble) {
+        bubbleTarget.innerHTML = sourceBubble.innerHTML;
+      }
+    }
+
+    /* Clear the "empty cart" state on both the drawer and its items wrapper */
+    cartDrawer.classList.remove('is-empty');
+    var itemsWrapper = cartDrawer.querySelector('cart-drawer-items');
+    if (itemsWrapper) itemsWrapper.classList.remove('is-empty');
+
+    /* Prefer the theme's own open() method so focus-trapping / overlay
+       click handlers are wired up correctly. */
+    if (typeof cartDrawer.open === 'function') {
+      cartDrawer.open();
+    } else {
+      setTimeout(function () {
+        cartDrawer.classList.add('animate', 'active');
+      });
+      document.body.classList.add('overflow-hidden');
+    }
+  }
+
+  atcBtn.addEventListener('click', function() {
+    var variantToAdd = curVariant;
+    if (!variantToAdd || !variantToAdd.available) {
+      for (var i = 0; i < prod.variants.length; i++) {
+        var v = prod.variants[i];
+        var colorOk = colorIdx === -1 || optVal(v, colorIdx) === selColor;
+        if (colorOk && v.available) { variantToAdd = v; break; }
+      }
+    }
+    if (!variantToAdd) {
+      console.error('SPG: no available variant found for this product.');
+      return;
+    }
+
+    /* Cancel any in-flight add request from this popup before starting a new one,
+       so a slow earlier response can never overwrite a newer cart state. */
+    if (pendingAddController) {
+      pendingAddController.abort();
+    }
+    pendingAddController = new AbortController();
+    var requestToken = ++latestRequestToken;
+
+    atcBtn.disabled      = true;
+    atcLabel.textContent = 'ADDING…';
+
+    fetch('/cart/add.js', {
+      method:  'POST',
+      signal:  pendingAddController.signal,
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        items: [{ id: variantToAdd.id, quantity: 1 }],
+        sections: 'cart-drawer,cart-icon-bubble',
+        sections_url: window.location.pathname
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      /* If a newer request has started since this one was sent, drop this
+         response entirely — it's stale and would show outdated cart data. */
+      if (requestToken !== latestRequestToken) return;
+
+      if (data.status) { console.error('SPG ATC error:', data); return; }
+      openCartDrawer(data);
+      close();
+    })
+    .catch(function(err) {
+      if (err.name === 'AbortError') return;
+      console.error('SPG ATC fetch error:', err);
+    })
+    .finally(function() {
+      if (requestToken === latestRequestToken) {
+        atcBtn.disabled = false;
+        updateVariant();
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Shoppable Gallery",
+  "tag": "section",
+  "class": "section-shoppable-gallery",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Tisso vison in the wild" },
+    { "type": "range", "id": "grid_gap",     "label": "Grid gap (px)",           "min": 4,  "max": 32, "step": 2, "default": 12 },
+    { "type": "range", "id": "cols_desktop", "label": "Columns — Desktop",        "min": 2,  "max": 4,  "step": 1, "default": 3  },
+    { "type": "range", "id": "cols_tablet",  "label": "Columns — Tablet (990px)", "min": 1,  "max": 3,  "step": 1, "default": 2  },
+    { "type": "range", "id": "cols_mobile",  "label": "Columns — Mobile (750px)", "min": 1,  "max": 3,  "step": 1, "default": 2  }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_item",
+      "name": "Gallery Item",
+      "settings": [
+        { "type": "image_picker", "id": "gallery_image", "label": "Gallery image (overrides product image)" },
+        { "type": "product",      "id": "product",       "label": "Product (popup content)"                 },
+        { "type": "range", "id": "pin_top",  "label": "Hotspot top (%)",  "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "pin_left", "label": "Hotspot left (%)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Shoppable Gallery",
+    "blocks": [
+      { "type": "gallery_item", "settings": { "pin_top": 55, "pin_left": 42 } },
+      { "type": "gallery_item", "settings": { "pin_top": 52, "pin_left": 80 } },
+      { "type": "gallery_item", "settings": { "pin_top": 22, "pin_left": 65 } },
+      { "type": "gallery_item", "settings": { "pin_top": 20, "pin_left": 74 } },
+      { "type": "gallery_item", "settings": { "pin_top": 48, "pin_left": 70 } },
+      { "type": "gallery_item", "settings": { "pin_top": 60, "pin_left": 88 } }
+    ]
+  }]
+}
+{% endschema %}

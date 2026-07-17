@@ -1,0 +1,461 @@
+
+
+{% style %}
+  #shopify-section-{{ section.id }} .gift-banner {
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
+    font-family: inherit;
+  }
+
+  /* ---------- HEADER ---------- */
+  #shopify-section-{{ section.id }} .gift-banner__header {
+    position: relative;
+    background-color: #F5F5F5;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 18px 0;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__small-text {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    padding: 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    position: relative;
+    z-index: 20;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__hamburger span:not(:last-child) {
+    margin-bottom: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__hamburger.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  #shopify-section-{{ section.id }} .gift-banner__hamburger.is-active span:nth-child(2) {
+    opacity: 0;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__hamburger.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* ---------- BUTTONS ---------- */
+  #shopify-section-{{ section.id }} .gift-banner__btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 40px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    overflow: hidden;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__btn span,
+  #shopify-section-{{ section.id }} .gift-banner__btn svg {
+    position: relative;
+    z-index: 2;
+    transition: color 0.4s ease;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    transition: transform 0.45s cubic-bezier(0.65, 0.05, 0.36, 1);
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__btn:hover::before {
+    transform: translateX(0);
+  }
+
+  /* Yellow button (header / drawer) */
+  #shopify-section-{{ section.id }} .gift-banner__btn--yellow {
+    background-color: #f5e400;
+    color: #000000;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__btn--yellow svg { color: #000000; }
+  #shopify-section-{{ section.id }} .gift-banner__btn--yellow::before {
+    background-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__btn--yellow:hover span { color: #ffffff; }
+  #shopify-section-{{ section.id }} .gift-banner__btn--yellow:hover svg { color: #ffffff; }
+
+  /* Black button (overlay "Shop Now") */
+  #shopify-section-{{ section.id }} .gift-banner__btn--black {
+    background-color: #000000;
+    color: #ffffff;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__btn--black svg { color: #ffffff; }
+  #shopify-section-{{ section.id }} .gift-banner__btn--black::before {
+    background-color: #f5e400;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__btn--black:hover span { color: #ffffff; }
+  #shopify-section-{{ section.id }} .gift-banner__btn--black:hover svg { color: #ffffff; }
+
+  /* ---------- DRAWER (mobile only) ---------- */
+  #shopify-section-{{ section.id }} .gift-banner__drawer {
+    display: none;
+  }
+
+  /* ---------- VISUAL (full-width image + page-width text overlay) ---------- */
+  #shopify-section-{{ section.id }} .gift-banner__visual {
+    position: relative;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__image-wrap {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    background-color: #f2f2f2;
+    min-height: 480px;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__image-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Desktop/mobile image visibility toggle (higher specificity so it wins) */
+  #shopify-section-{{ section.id }} .gift-banner__image-wrap img.gift-banner__image--mobile {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__overlay .page-width {
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__text {
+    max-width: 418px;
+    text-align: left;
+    padding-bottom: 60px;
+    pointer-events: auto;
+  }
+
+  #shopify-section-{{ section.id }} .gift-banner__heading {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.1;
+    padding-bottom: 50px;
+    margin: 0px;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__description {
+    color: #333333;
+    line-height: 28px;
+    margin: 0 0 20px;
+    padding-bottom: 40px;
+    font-size: 17px;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__description p {
+    margin: 0;
+  }
+
+  /* Mobile-only shop button lives directly on the image, hidden on desktop */
+  #shopify-section-{{ section.id }} .gift-banner__shop-btn--mobile {
+    display: none;
+  }
+
+  /* ---------- BOTTOM STRIP ---------- */
+  #shopify-section-{{ section.id }} .gift-banner__bottom {
+    background-color: #F5F5F5;
+    text-align: center;
+    padding: 12px 20px;
+  }
+  #shopify-section-{{ section.id }} .gift-banner__bottom p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ================= MOBILE ================= */
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .gift-banner__header-inner {
+      padding: 16px 0;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__hamburger {
+      display: flex;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 17px;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__small-text,
+    #shopify-section-{{ section.id }} .gift-banner__header-inner > .gift-banner__btn {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__drawer {
+      display: block;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      text-align: center;
+      border-bottom: 1px solid #ececec;
+      transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__drawer.is-open {
+      max-height: 300px;
+      opacity: 1;
+      padding: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__drawer-text {
+      font-size: 14px;
+      margin: 0 0 16px;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__image-wrap {
+      min-height: auto;
+    }
+
+    /* Swap image visibility on mobile */
+    #shopify-section-{{ section.id }} .gift-banner__image-wrap img.gift-banner__image--desktop {
+      display: none;
+    }
+    #shopify-section-{{ section.id }} .gift-banner__image-wrap img.gift-banner__image--mobile {
+      display: block;
+    }
+
+    /* Text overlays on top of the image, centered (top instead of bottom) */
+    #shopify-section-{{ section.id }} .gift-banner__overlay {
+      align-items: flex-start;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__text {
+      max-width: 100%;
+      text-align: center;
+      padding: 20px 0 0;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__heading {
+      font-size: 26px;
+      padding-bottom: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .gift-banner__description {
+      padding-bottom: 0;
+      margin: 0;
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    /* Desktop shop button (inside text block) hidden on mobile */
+    #shopify-section-{{ section.id }} .gift-banner__shop-btn--desktop {
+      display: none;
+    }
+
+    /* Mobile shop button appears overlaid on the image, bottom-center */
+    #shopify-section-{{ section.id }} .gift-banner__shop-btn--mobile {
+      display: inline-flex;
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+  }
+{% endstyle %}
+
+<div class="gift-banner">
+  <div class="gift-banner__header">
+    <div class="page-width">
+      <div class="gift-banner__header-inner">
+        <button type="button" class="gift-banner__hamburger" id="GiftBannerToggle-{{ section.id }}" aria-expanded="false" aria-controls="GiftBannerDrawer-{{ section.id }}" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="gift-banner__logo">{{ section.settings.logo_text }}</div>
+
+        {% if section.settings.small_text != blank %}
+          <div class="gift-banner__small-text">{{ section.settings.small_text }}</div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <a href="{{ section.settings.button_link | default: '#' }}" class="gift-banner__btn gift-banner__btn--yellow"><span>{{ section.settings.button_label }}</span><svg width="16" height="12" viewBox="0 0 16 12" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 0.5L15 6L9.5 11.5M15 6H0" stroke="currentColor" fill="none" stroke-width="1.4"/></svg></a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="gift-banner__drawer" id="GiftBannerDrawer-{{ section.id }}">
+      {% if section.settings.small_text != blank %}
+        <p class="gift-banner__drawer-text">{{ section.settings.small_text }}</p>
+      {% endif %}
+      {% if section.settings.button_label != blank %}
+        <a href="{{ section.settings.button_link | default: '#' }}" class="gift-banner__btn gift-banner__btn--yellow"><span>{{ section.settings.button_label }}</span><svg width="16" height="12" viewBox="0 0 16 12" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 0.5L15 6L9.5 11.5M15 6H0" stroke="currentColor" fill="none" stroke-width="1.4"/></svg></a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="gift-banner__visual">
+    <div class="gift-banner__image-wrap">
+      {% if section.settings.background_image != blank %}
+        <img
+          class="gift-banner__image--desktop"
+          src="{{ section.settings.background_image | image_url: width: 1500 }}"
+          srcset="{{ section.settings.background_image | image_url: width: 480 }} 480w, {{ section.settings.background_image | image_url: width: 768 }} 768w, {{ section.settings.background_image | image_url: width: 1100 }} 1100w, {{ section.settings.background_image | image_url: width: 1500 }} 1500w"
+          sizes="100vw"
+          alt="{{ section.settings.background_image.alt | escape }}"
+          width="{{ section.settings.background_image.width }}"
+          height="{{ section.settings.background_image.height }}"
+          loading="lazy"
+        >
+      {% endif %}
+
+      {% if section.settings.mobile_background_image != blank %}
+        <img
+          class="gift-banner__image--mobile"
+          src="{{ section.settings.mobile_background_image | image_url: width: 768 }}"
+          srcset="{{ section.settings.mobile_background_image | image_url: width: 480 }} 480w, {{ section.settings.mobile_background_image | image_url: width: 768 }} 768w"
+          sizes="100vw"
+          alt="{{ section.settings.mobile_background_image.alt | escape }}"
+          width="{{ section.settings.mobile_background_image.width }}"
+          height="{{ section.settings.mobile_background_image.height }}"
+          loading="lazy"
+        >
+      {% elsif section.settings.background_image != blank %}
+        <img
+          class="gift-banner__image--mobile"
+          src="{{ section.settings.background_image | image_url: width: 768 }}"
+          alt="{{ section.settings.background_image.alt | escape }}"
+          width="{{ section.settings.background_image.width }}"
+          height="{{ section.settings.background_image.height }}"
+          loading="lazy"
+        >
+      {% endif %}
+
+      {% if section.settings.shop_button_label != blank %}
+        <a href="{{ section.settings.shop_button_link | default: '#' }}" class="gift-banner__btn gift-banner__btn--black gift-banner__shop-btn--mobile"><span>{{ section.settings.shop_button_label }}</span><svg width="16" height="12" viewBox="0 0 16 12" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 0.5L15 6L9.5 11.5M15 6H0" stroke="currentColor" fill="none" stroke-width="1.4"/></svg></a>
+      {% endif %}
+    </div>
+
+    <div class="gift-banner__overlay">
+      <div class="page-width">
+        <div class="gift-banner__text">
+          {% if section.settings.heading != blank %}
+            <h2 class="gift-banner__heading">{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.description != blank %}
+            <div class="gift-banner__description">{{ section.settings.description }}</div>
+          {% endif %}
+
+          {% if section.settings.shop_button_label != blank %}
+            <a href="{{ section.settings.shop_button_link | default: '#' }}" class="gift-banner__btn gift-banner__btn--black gift-banner__shop-btn--desktop"><span>{{ section.settings.shop_button_label }}</span><svg width="16" height="12" viewBox="0 0 16 12" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 0.5L15 6L9.5 11.5M15 6H0" stroke="currentColor" fill="none" stroke-width="1.4"/></svg></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if section.settings.bottom_text != blank %}
+    <div class="gift-banner__bottom">
+      <p>{{ section.settings.bottom_text }}</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  (function () {
+    var sectionId = {{ section.id | json }};
+    var toggle = document.getElementById('GiftBannerToggle-' + sectionId);
+    var drawer = document.getElementById('GiftBannerDrawer-' + sectionId);
+
+    if (!toggle || !drawer) return;
+
+    toggle.addEventListener('click', function () {
+      var isOpen = drawer.classList.contains('is-open');
+
+      if (isOpen) {
+        drawer.classList.remove('is-open');
+        toggle.classList.remove('is-active');
+        toggle.setAttribute('aria-expanded', 'false');
+      } else {
+        drawer.classList.add('is-open');
+        toggle.classList.add('is-active');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Gift Guide Banner",
+  "settings": [
+    { "type": "text", "id": "logo_text", "label": "Logo Text", "default": "TISSO VISON" },
+    { "type": "text", "id": "small_text", "label": "Small Text", "default": "Find the ideal gift for your loved ones." },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "The Gift Guide" },
+    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button Label", "default": "Choose Gift" },
+    { "type": "url", "id": "button_link", "label": "Button Link" },
+    { "type": "text", "id": "shop_button_label", "label": "Shop Button Label", "default": "Shop Now" },
+    { "type": "url", "id": "shop_button_link", "label": "Shop Button Link" },
+    { "type": "text", "id": "bottom_text", "label": "Bottom Text", "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL" },
+    { "type": "image_picker", "id": "background_image", "label": "Background Image" },
+    { "type": "image_picker", "id": "mobile_background_image", "label": "Mobile Background Image" }
+  ],
+  "presets": [
+    { "name": "Gift Guide Banner" }
+  ]
+}
+{% endschema %}

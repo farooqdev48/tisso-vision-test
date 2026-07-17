@@ -1,0 +1,123 @@
+<style>
+.collection-feature { background: {{ section.settings.bg_color }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+.collection-feature .cf-content-wrap { display: flex; align-items: center;column-gap: 24px;  }
+.collection-feature .cf-images { width: 50%; display: flex; }
+.collection-feature .cf-img-a { width: 48%; }
+.collection-feature .cf-img-b { width: 48%; margin-left: 4%; margin-top: 7%; }
+.collection-feature .cf-images img { width: 100%; display: block; aspect-ratio: 3 / 4; object-fit: cover; }
+.collection-feature .cf-text { width: 50%; padding-left: 5%; }
+.collection-feature .cf-eyebrow { font-size: {{ section.settings.eyebrow_size }}px; color: {{ section.settings.eyebrow_color }}; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 18px; font-weight: bold; }
+.collection-feature .cf-heading { font-size: {{ section.settings.heading_size }}px; line-height: 1.25em; font-weight: 300; color: {{ section.settings.heading_color }}; margin: 0 0 22px; }
+.collection-feature .cf-heading em { font-style: italic; color: {{ section.settings.heading_highlight_color }}; }
+.collection-feature .cf-description { font-size: {{ section.settings.description_size }}px; line-height: 1.625em; font-weight: 300; color: {{ section.settings.description_color }}; margin: 0 0 26px; }
+.collection-feature .cf-points { list-style: none; margin: 0 0 34px; padding: 0; }
+.collection-feature .cf-points li { position: relative; font-size: {{ section.settings.points_size }}px; color: {{ section.settings.points_color }}; text-transform: uppercase; padding-left: 18px; margin-bottom: 12px; }
+.collection-feature .cf-points li::before { content: ""; position: absolute; left: 0; top: 6px; width: 6px; height: 6px; border-radius: 50%; background: {{ section.settings.heading_highlight_color }}; }
+.collection-feature .cf-button { display: inline-block; background: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }}; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; padding: 17px 34px; font-weight: bold; }
+
+@media (max-width: 768px) {
+  .collection-feature .cf-content-wrap { flex-direction: column; }
+  .collection-feature .cf-images, .collection-feature .cf-text { width: 100%; padding-left: 0; }
+  .collection-feature .cf-text { margin-top: 32px; }
+}
+</style>
+
+<div class="collection-feature">
+  <div class="page-width">
+    <div class="cf-content-wrap">
+
+      <div class="cf-images">
+        <div class="cf-img-a">
+          {%- if section.settings.image_a != blank -%}
+            <img src="{{ section.settings.image_a | image_url: width: 900 }}" alt="{{ section.settings.image_a.alt | escape }}" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div class="cf-img-b">
+          {%- if section.settings.image_b != blank -%}
+            <img src="{{ section.settings.image_b | image_url: width: 900 }}" alt="{{ section.settings.image_b.alt | escape }}" loading="lazy">
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="cf-text">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="cf-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h2 class="cf-heading">{{ section.settings.heading_line1 }}<br>{{ section.settings.heading_line2 }}</h2>
+
+        {%- if section.settings.description != blank -%}
+          <div class="cf-description">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="cf-points">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a href="{{ section.settings.button_link | default: '#' }}" class="cf-button">{{ section.settings.button_label }}</a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Feature",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F2EFE9" },
+    { "type": "image_picker", "id": "image_a", "label": "Primary image" },
+    { "type": "image_picker", "id": "image_b", "label": "Secondary image" },
+
+    { "type": "text", "id": "eyebrow", "label": "Overline label", "default": "Creation Focus" },
+    { "type": "range", "id": "eyebrow_size", "label": "Overline size", "min": 10, "max": 20, "step": 1, "unit": "px", "default": 12 },
+    { "type": "color", "id": "eyebrow_color", "label": "Overline color", "default": "#7A1F2B" },
+
+    { "type": "text", "id": "heading_line1", "label": "Heading — line 1", "default": "The" },
+    { "type": "inline_richtext", "id": "heading_line2", "label": "Heading — line 2", "default": "<em>Oslo</em> Collection" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 60, "step": 1, "unit": "px", "default": 36 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#2B2B2B" },
+    { "type": "color", "id": "heading_highlight_color", "label": "Heading emphasis color", "default": "#7A1F2B" },
+
+    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>A feat of precision sculpted in 18/0 stainless steel. With its perfect cylindrical profiles and meticulously studied balance in hand, the Oslo collection embodies the pinnacle of contemporary minimalism.</p>" },
+    { "type": "range", "id": "description_size", "label": "Description size", "min": 10, "max": 20, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "description_color", "label": "Description color", "default": "#6B6B6B" },
+
+    { "type": "range", "id": "points_size", "label": "Feature list size", "min": 10, "max": 18, "step": 1, "unit": "px", "default": 12 },
+    { "type": "color", "id": "points_color", "label": "Feature list color", "default": "#3D3D3D" },
+
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Discover Oslo" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#7A1F2B" },
+    { "type": "color", "id": "button_text_color", "label": "Button text color", "default": "#FFFFFF" },
+
+    { "type": "range", "id": "padding_top", "label": "Top spacing", "min": 0, "max": 150, "step": 5, "unit": "px", "default": 90 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom spacing", "min": 0, "max": 150, "step": 5, "unit": "px", "default": 90 }
+  ],
+  "blocks": [
+    {
+      "type": "feature_point",
+      "name": "Feature point",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "High-quality stainless steel" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Feature",
+      "blocks": [
+        { "type": "feature_point" },
+        { "type": "feature_point" },
+        { "type": "feature_point" }
+      ]
+    }
+  ]
+}
+{% endschema %}

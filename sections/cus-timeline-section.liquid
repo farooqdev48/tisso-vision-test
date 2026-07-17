@@ -1,0 +1,385 @@
+
+{%- style -%}
+
+/* ── Section wrapper ── */
+.tl-section-{{ section.id }} {
+  background: #faf9f7;
+  padding: 80px 0 60px;
+}
+
+/* ── Header ── */
+.tl-header-{{ section.id }} {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.tl-sub-{{ section.id }} {
+  /* display: block; */
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #8b1a2c;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+.tl-title-{{ section.id }} {
+  font-size: 48px;
+  font-weight: 700;
+  color: #8b1a2c;
+  line-height: 1.15;
+      margin-top: 0px;
+      margin-bottom: 10px;
+}
+.tl-desc-{{ section.id }} {
+ 
+  color: #666;
+  line-height: 1.8;
+  margin: 0 auto;
+}
+.tl-desc-{{ section.id }} p { margin: 0; }
+
+/* ── Timeline body — single line ── */
+.tl-body-{{ section.id }} {
+  position: relative;
+  padding: 0;
+}
+.tl-body-{{ section.id }}::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: #d4c9bc;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* ── Timeline item ── */
+.tl-item-{{ section.id }} {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 80px;
+}
+.tl-item-{{ section.id }}:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Dot ── */
+.tl-dot-{{ section.id }} {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #8b1a2c;
+  z-index: 2;
+  display: block !important;
+}
+
+/* ── Content side ── */
+.tl-content-{{ section.id }} {
+  width: 45%;
+  padding-right: 48px;
+  text-align: right;
+}
+.tl-content-{{ section.id }}.tl-right {
+  width: 45%;
+  padding-right: 0;
+  padding-left: 48px;
+  text-align: left;
+  margin-left: 10%;
+}
+
+/* ── Image side ── */
+.tl-image-{{ section.id }} {
+  width: 45%;
+  margin-left: 10%;
+      height: 350px;
+}
+.tl-image-{{ section.id }}.tl-left {
+  margin-left: 0;
+  margin-right: 0;
+}
+.tl-image-{{ section.id }} img {
+  width: 100%;
+  /* aspect-ratio: 4 / 3; */
+  object-fit: cover;
+  display: block;
+  height: 100%;
+}
+
+/* ── Typography ── */
+.tl-year-{{ section.id }} {
+  font-size: 38px;
+  font-weight: 600;
+  color: #8b1a2c;
+  line-height: 1;
+  margin-bottom: 6px;
+  font-style: normal;
+}
+.tl-etitle-{{ section.id }} {
+  font-size: 20px;
+  font-weight: bold;
+  color: #8b1a2c;
+  margin-bottom: 14px;
+  display: block;
+}
+.tl-etitle-{{ section.id }} a { color: inherit; text-decoration: none; }
+.tl-edesc-{{ section.id }} {
+
+  color: #555;
+  line-height: 1.8;
+}
+.tl-edesc-{{ section.id }} p { margin: 0; }
+
+/* ── Tablet ── */
+@media screen and (max-width: 900px) {
+  .tl-title-{{ section.id }} { font-size: 36px; }
+  .tl-content-{{ section.id }},
+  .tl-content-{{ section.id }}.tl-right { padding-right: 32px; padding-left: 32px; }
+}
+
+/* ── Mobile ── */
+@media screen and (max-width: 640px) {
+  .tl-section-{{ section.id }} { padding: 48px 0; }
+  .tl-header-{{ section.id }} { margin-bottom: 48px; }
+  .tl-title-{{ section.id }} { font-size: 28px; }
+  .tl-desc-{{ section.id }} { font-size: 13px; }
+
+  /* Line shifts left */
+  .tl-body-{{ section.id }}::before {
+    left: 16px;
+    transform: none;
+  }
+
+  /* Items stack vertically */
+  .tl-item-{{ section.id }} {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 44px;
+    margin-bottom: 48px;
+  }
+
+  /* Dot aligns to left line */
+  .tl-dot-{{ section.id }} {
+    left: 16px;
+    top: 0;
+    transform: translate(-50%, 0);
+  }
+
+  /* All widths full on mobile */
+  .tl-content-{{ section.id }},
+  .tl-content-{{ section.id }}.tl-right,
+  .tl-image-{{ section.id }},
+  .tl-image-{{ section.id }}.tl-left {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    order: unset;
+  }
+
+  /* Image always on top */
+  .tl-image-{{ section.id }} { order: -1 !important; margin-bottom: 16px; }
+  .tl-image-{{ section.id }}.tl-left { order: -1 !important; margin-bottom: 16px; }
+
+  .tl-year-{{ section.id }} { font-size: 28px; }
+}
+{%- endstyle -%}
+
+<div class="tl-section-{{ section.id }}">
+  <div class="page-width">
+
+    {%- if section.settings.sub_heading != blank or section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="tl-header-{{ section.id }}">
+        {%- if section.settings.sub_heading != blank -%}
+          <span class="tl-sub-{{ section.id }}">{{ section.settings.sub_heading }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="tl-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <div class="tl-desc-{{ section.id }}">{{ section.settings.description }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="tl-body-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'timeline_item' -%}
+
+          {%- assign img_left = false -%}
+          {%- if block.settings.layout == 'image_left' -%}
+            {%- assign img_left = true -%}
+          {%- endif -%}
+
+          <div class="tl-item-{{ section.id }}" {{ block.shopify_attributes }}>
+
+            {%- if img_left -%}
+              <!-- Image Left -->
+              <div class="tl-image-{{ section.id }} tl-left">
+                {%- if block.settings.image != blank -%}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 700 }}"
+                    alt="{{ block.settings.title | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                  >
+                {%- endif -%}
+              </div>
+              <div class="tl-dot-{{ section.id }}"></div>
+              <!-- Content Right -->
+              <div class="tl-content-{{ section.id }} tl-right">
+                {%- if block.settings.year != blank -%}
+                  <p class="tl-year-{{ section.id }}">{{ block.settings.year }}</p>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <span class="tl-etitle-{{ section.id }}">{{ block.settings.title }}</span>
+                {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <div class="tl-edesc-{{ section.id }}">{{ block.settings.description }}</div>
+                {%- endif -%}
+              </div>
+
+            {%- else -%}
+              <!-- Content Left -->
+              <div class="tl-content-{{ section.id }}">
+                {%- if block.settings.year != blank -%}
+                  <p class="tl-year-{{ section.id }}">{{ block.settings.year }}</p>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <span class="tl-etitle-{{ section.id }}">{{ block.settings.title }}</span>
+                {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <div class="tl-edesc-{{ section.id }}">{{ block.settings.description }}</div>
+                {%- endif -%}
+              </div>
+              <div class="tl-dot-{{ section.id }}"></div>
+              <!-- Image Right -->
+              <div class="tl-image-{{ section.id }}">
+                {%- if block.settings.image != blank -%}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 700 }}"
+                    alt="{{ block.settings.title | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                  >
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          </div>
+
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Timeline",
+  "tag": "section",
+  "class": "timeline-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sub_heading",
+      "label": "Sub Heading",
+      "default": "The Timeline"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Journey Through Time"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>For over half a century, we have navigated the evolving landscape of design, establishing milestones that have redefined table settings worldwide.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "timeline_item",
+      "name": "Timeline Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Year",
+          "default": "1973"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "The Inception"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>A brief description of this milestone in the journey.</p>"
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "options": [
+            { "value": "image_right", "label": "Image Right" },
+            { "value": "image_left", "label": "Image Left" }
+          ],
+          "default": "image_right"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Timeline",
+      "blocks": [
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "1973",
+            "title": "The Inception",
+            "description": "<p>B Brilliant is founded in Florence, Italy, as a small artisanal workshop specializing in hand-forged steel cutlery for European royal families.</p>",
+            "layout": "image_right"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "1992",
+            "title": "The Crystal Expansion",
+            "description": "<p>We expand our horizons to Tuscany, collaborating with local glassblowing guilds to introduce our first lead-free mouth-blown crystal wine glassware collection.</p>",
+            "layout": "image_left"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "year": "2012",
+            "title": "The Modernist Shift",
+            "description": "<p>Under new creative direction, B Brilliant pivots towards minimalist, contemporary, and architectural aesthetics, stripping away traditional baroque engravings.</p>",
+            "layout": "image_right"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
